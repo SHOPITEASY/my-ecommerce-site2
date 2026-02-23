@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+<h2>Your Cart</h2>
+<div id="cart-items"></div>
+<input id="location" placeholder="Delivery Location">
+<input id="time" placeholder="Delivery Time">
+<input id="phone" placeholder="2547XXXXXXXX">
+<button onclick="pay()">Pay M-Pesa</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+<script>
+// Load cart from localStorage
+function loadCart() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    cart.forEach(item => {
+        container.innerHTML += `<div>
+            <h4>${item.name}</h4>
+            <p>KES ${item.price}</p>
+        </div>`;
+    });
+}
+loadCart();
+
+// Fake M-Pesa payment call (replace with backend function later)
+function pay() {
+    alert("Payment request sent to phone. (Integration with M-Pesa backend needed)");
+}
+</script>
+</body>
+</html>
