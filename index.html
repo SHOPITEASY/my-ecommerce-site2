@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Ecommerce Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+<h2>Products</h2>
+<div id="products"></div>
+
+<!-- Links -->
+<a href="signup.html">Sign Up</a> |
+<a href="login.html">Login</a> |
+<a href="cart.html">Cart</a> |
+<a href="admin.html">Admin</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+<script>
+async function loadProducts() {
+    const { data, error } = await supabase.from('products').select('*');
+    if (error) { console.log(error); return; }
+
+    const container = document.getElementById('products');
+    container.innerHTML = '';
+    
+    data.forEach(product => {
+        container.innerHTML += `
+        <div class="product">
+            <h3>${product.name}</h3>
+            <p>KES ${product.price}</p>
+            <img src="${product.image}" width="200">
+            <button onclick="addToCart('${product.id}', '${product.name}', '${product.price}')">Add to Cart</button>
+        </div>`;
+    });
+}
+
+// Simple cart storage in browser
+function addToCart(id, name, price) {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push({id, name, price});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(name + " added to cart");
+}
+
+loadProducts();
+</script>
+</body>
+</html>
